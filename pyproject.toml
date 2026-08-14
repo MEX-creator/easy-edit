@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "editdna"
+version = "0.1.0"
+description = "Extract the editing DNA of a reference video (pacing, transitions, captions, music sync) and rebuild it on your own footage in DaVinci Resolve."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "EditDNA contributors" }]
+keywords = ["video-editing", "davinci-resolve", "style-transfer", "llm", "computer-vision", "post-production"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Video",
+]
+
+[project.optional-dependencies]
+cv = ["opencv-python-headless>=4.6"]
+shots = ["scenedetect[opencv]>=0.6.1"]
+ocr = ["easyocr>=1.6.2"]
+audio = ["librosa>=0.10.0", "numpy>=1.22"]
+llm = ["litellm>=1.40.0"]
+dev = ["pytest>=7.0"]
+all = [
+    "opencv-python-headless>=4.6",
+    "scenedetect[opencv]>=0.6.1",
+    "easyocr>=1.6.2",
+    "librosa>=0.10.0",
+    "numpy>=1.22",
+    "litellm>=1.40.0",
+]
+
+[project.scripts]
+editdna = "cli:main"
+
+[tool.setuptools]
+packages = ["core", "analyzer", "applier", "llm", "resolve_driver"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

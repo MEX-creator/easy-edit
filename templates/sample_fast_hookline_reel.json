@@ -1,0 +1,32 @@
+{
+  "template_name": "fast-hookline-reel",
+  "schema_version": 1,
+  "source": "reference_video.mp4",
+  "created_at": "2026-01-01T00:00:00Z",
+  "pacing": {
+    "avg_shot_duration_sec": 1.2,
+    "cut_style": "hard_cut",
+    "beat_synced": true,
+    "cuts_per_10s": 8
+  },
+  "transitions": [
+    {"type": "whip_pan", "frequency": "every_3rd_cut"}
+  ],
+  "text_overlays": {
+    "style": "bold_center_pop_in",
+    "font_weight": "heavy",
+    "position": "center",
+    "avg_words_per_overlay": 4,
+    "appears_on_beat": true
+  },
+  "captions": {
+    "present": true,
+    "style": "sentence_lower_third",
+    "position": "lower_third"
+  },
+  "music_sync": {
+    "cuts_aligned_to_beats": true,
+    "energy_curve": "build_to_drop"
+  },
+  "llm_style_summary": "Fast punchy hookline-style reel edit, cuts land on beat, bold pop-in text for key phrases, whip-pan transitions used sparingly for emphasis on payoff moments."
+}
