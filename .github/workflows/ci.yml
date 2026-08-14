@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  # Core suite: runs with ZERO installed dependencies. The heavy-dependency
+  # tests (cv2, librosa, ffmpeg) skip themselves automatically, so this job
+  # validates the whole pipeline logic on bare Python across versions.
+  stdlib-core:
+    name: stdlib core (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Compile-check every module
+        run: |
+          python -m py_compile cli.py core/*.py analyzer/*.py applier/*.py \
+            llm/*.py resolve_driver/*.py tests/*.py
+
+      - name: Run stdlib-only test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: CLI smoke test (offline commands)
+        run: |
+          python cli.py --help > /dev/null
+          python cli.py demo --out-dir /tmp/editdna-demo
+          python cli.py build /tmp/editdna-demo/demo_edl.json > /dev/null
+          python cli.py demo-apply --out /tmp/editdna-demo/demo_plan.json > /dev/null
+          python cli.py templates list > /dev/null
+
+  # Full suite with the analysis extras (OpenCV + PySceneDetect + librosa),
+  # so the cv2 transition tests, librosa beat tests and the beat-synced edit
+  # integration test actually run. No OCR (EasyOCR/torch is too heavy for CI).
+  # Ubuntu runners ship ffmpeg, so the audio-decode fallback tests run too.
+  analysis-extras:
+    name: analysis extras (cv2 + librosa)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install analysis extras
+        run: pip install -e ".[cv,shots,audio]"
+
+      - name: Run full suite including cv2/librosa tests
+        run: python -m unittest discover -s tests -v
