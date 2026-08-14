@@ -1,8 +1,6 @@
 # EditDNA
 
-<!-- Once the repo is live, replace <OWNER> with your GitHub username so the
-     badge points at your fork's CI runs. -->
-[![CI](https://github.com/<OWNER>/editdna/actions/workflows/ci.yml/badge.svg)](https://github.com/<OWNER>/editdna/actions/workflows/ci.yml)
+[![CI](https://github.com/MEX-creator/easy-edit/actions/workflows/ci.yml/badge.svg)](https://github.com/MEX-creator/easy-edit/actions/workflows/ci.yml)
 
 **Clone the edit, not the footage.**
 
